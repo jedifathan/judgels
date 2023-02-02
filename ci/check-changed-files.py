@@ -16,8 +16,7 @@ MODULES = OrderedDict([
     (':judgels-commons:judgels-persistence-testing', {':judgels-commons:judgels-persistence-api'}),
     (':judgels-commons:judgels-recaptcha', set()),
     (':judgels-commons:judgels-service-api', set()),
-    (':judgels-commons:judgels-service-core', {':judgels-commons:judgels-service-jaxrs'}),
-    (':judgels-commons:judgels-service-jaxrs', {':judgels-commons:judgels-service-api'}),
+    (':judgels-commons:judgels-service-core', {':judgels-commons:judgels-service-api'}),
     (':judgels-commons:judgels-service-persistence', {':judgels-commons:judgels-persistence-core', ':judgels-commons:judgels-service-core'}),
 
     (':jophiel:jophiel-api', {':judgels-commons:judgels-persistence-api', ':judgels-commons:judgels-service-api'}),
@@ -48,7 +47,8 @@ MODULES = OrderedDict([
     (':jerahmeel:jerahmeel-dist', set()),
     (':jerahmeel', {':jerahmeel:jerahmeel-app', ':jerahmeel:jerahmeel-api', ':jerahmeel:jerahmeel-dist'}),
 
-    (':michael', {':jophiel'}),
+    (':michael:michael-app', set()),
+    (':michael', {':michael:michael-app', ':jophiel', ':uriel', ':jerahmeel'}),
 
     (':raphael:package.json', set()),
     (':raphael', {':raphael:package.json'})
