@@ -2,22 +2,14 @@ apply from: '../../gradle/java.gradle'
 apply from: '../../gradle/integTest.gradle'
 
 dependencies {
-    implementation project(':judgels-commons:judgels-fs')
-    implementation project(':judgels-commons:judgels-messaging')
-    implementation project(':judgels-commons:judgels-recaptcha')
-    implementation project(':judgels-commons:judgels-service-core')
-    implementation project(':judgels-commons:judgels-service-persistence')
-
-    implementation project(':michael:jophiel-app')
-    implementation project(':michael:jophiel-client')
-    implementation project(':michael:sandalphon-app')
-    implementation project(':michael:sandalphon-client')
-    implementation project(':michael:uriel-app')
     implementation project(':michael:uriel-api')
-    implementation project(':michael:jerahmeel-app')
-    implementation project(':gabriel:gabriel-api')
+    implementation project(':michael:jophiel-client')
+    implementation project(':michael:sandalphon-client')
+    implementation project(':judgels-commons:judgels-messaging')
 
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
     implementation "com.palantir.websecurity:dropwizard-web-security:$dropwizardWebSecurityVersion"
     implementation "io.dropwizard:dropwizard-core:$dropwizardVersion"
     implementation "io.dropwizard:dropwizard-forms:$dropwizardVersion"
@@ -27,7 +19,17 @@ dependencies {
     compileOnly "org.hibernate:hibernate-jpamodelgen:$hibernateVersion"
     compileOnly "org.immutables:value-annotations:$immutablesVersion"
 
-    integTestRuntimeOnly "javax.servlet:javax.servlet-api:$servletApiVersion"
+    runtime "mysql:mysql-connector-java:$mysqlConnectorJavaVersion"
+
+    testImplementation project(':judgels-commons:judgels-persistence-testing')
+    testImplementation "org.assertj:assertj-core:$assertJVersion"
+    testImplementation "org.awaitility:awaitility:$awaitilityVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "com.github.tomakehurst:wiremock:$wiremockVersion"
+
+    integTestImplementation "io.dropwizard:dropwizard-testing:$dropwizardVersion"
+    integTestImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
 
     integTestAnnotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
 
