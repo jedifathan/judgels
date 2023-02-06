@@ -26,6 +26,13 @@
       proto: tcp
       comment: rabbitmq
 
+  - name: Allow rabbitmq traffic through the firewall too
+    ufw:
+      rule: allow
+      to_port: "9003"
+      proto: tcp
+      comment: rabbitmq
+
   - name: Allow rabbitmq management traffic through the firewall
     ufw:
       rule: allow
