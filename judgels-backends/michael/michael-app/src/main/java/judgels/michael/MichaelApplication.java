@@ -2,6 +2,8 @@ package judgels.michael;
 
 import com.palantir.websecurity.WebSecurityBundle;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.bundles.webjars.WebJarBundle;
 import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -53,22 +55,44 @@ public class MichaelApplication extends Application<MichaelApplicationConfigurat
         JudgelsObjectMappers.configure(bootstrap.getObjectMapper());
 
         bootstrap.addBundle(hibernateBundle);
+        bootstrap.addBundle(new AssetsBundle());
         bootstrap.addBundle(new MultiPartBundle());
         bootstrap.addBundle(new MichaelMigrationsBundle());
+        bootstrap.addBundle(new MichaelViewBundle());
+        bootstrap.addBundle(new WebJarBundle("org.webjars.bower"));
         bootstrap.addBundle(new WebSecurityBundle());
     }
 
     @Override
     public void run(MichaelApplicationConfiguration config, Environment env) {
+        JophielConfiguration jophielConfig = config.getJophielConfig();
+        SandalphonConfiguration sandalphonConfig = config.getSandalphonConfig();
+
         MichaelComponent component = DaggerMichaelComponent.builder()
                 .judgelsApplicationModule(new JudgelsApplicationModule(env))
+                .judgelsHibernateModule(new JudgelsHibernateModule(hibernateBundle))
+                .michaelModule(new MichaelModule(config.getMichaelConfig()))
+
+                // Jophiel
+                .awsModule(new AwsModule(jophielConfig.getAwsConfig()))
+                .userAvatarModule(new UserAvatarModule(
+                        Paths.get(jophielConfig.getBaseDataDir()),
+                        jophielConfig.getUserAvatarConfig()))
+
+                // Sandalphon
+                .sandalphonModule(new SandalphonModule(sandalphonConfig))
+
                 .build();
 
         env.jersey().register(JudgelsJerseyFeature.INSTANCE);
         env.jersey().register(component.pingResource());
+        env.jersey().register(component.indexResource());
+        env.jersey().register(component.problemResource());
+        env.jersey().register(component.programmingProblemResource());
+        env.jersey().register(component.lessonResource());
 
-        runJophiel(config.getJophielConfig(), env, component.scheduler());
-        runSandalphon(config.getSandalphonConfig(), env, component.scheduler());
+        runJophiel(jophielConfig, env, component.scheduler());
+        runSandalphon(sandalphonConfig, env, component.scheduler());
         runUriel(config.getUrielConfig(), env, component.scheduler());
         runJerahmeel(config.getJerahmeelConfig(), env, component.scheduler());
     }

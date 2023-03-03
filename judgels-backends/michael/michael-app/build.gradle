@@ -15,13 +15,24 @@ dependencies {
     implementation project(':michael:uriel-app')
     implementation project(':michael:uriel-api')
     implementation project(':michael:jerahmeel-app')
+    implementation project(':gabriel:gabriel-engines')
     implementation project(':gabriel:gabriel-api')
 
     implementation "com.google.dagger:dagger:$daggerVersion"
     implementation "com.palantir.websecurity:dropwizard-web-security:$dropwizardWebSecurityVersion"
+    implementation "io.dropwizard:dropwizard-assets:$dropwizardVersion"
     implementation "io.dropwizard:dropwizard-core:$dropwizardVersion"
     implementation "io.dropwizard:dropwizard-forms:$dropwizardVersion"
     implementation "io.dropwizard:dropwizard-migrations:$dropwizardVersion"
+    implementation "io.dropwizard:dropwizard-views-freemarker:$dropwizardVersion"
+
+    implementation "io.dropwizard-bundles:dropwizard-webjars-bundle:$dropwizardWebJarsBundleVersion"
+    implementation ('org.webjars:bootstrap:3.3.4') {
+        exclude group: 'org.webjars', module: 'jquery'
+    }
+    implementation 'org.webjars:jquery:2.1.4'
+    implementation 'org.webjars.bower:open-sans:1.1.0'
+    implementation 'org.webjars.bower:roboto-fontface:0.7.0'
 
     compileOnly "com.google.dagger:dagger-compiler:$daggerVersion"
     compileOnly "org.hibernate:hibernate-jpamodelgen:$hibernateVersion"
